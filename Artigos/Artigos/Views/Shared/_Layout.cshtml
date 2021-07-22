@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Artigos</title>
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        @Html.ActionLink("Artigos Acadêmicos", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Alterna navegação">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                @Html.ActionLink("Início", "Index", "Home", new { area = "" }, new { @class = "nav-item nav-link" })
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (User.IsInRole("Administrador") || User.IsInRole("Escritor"))
+                    {
+                        @Html.ActionLink("Artigos", "Index", "Artigo", new { area = "" }, new { @class = "nav-item nav-link" })
+
+                        if (User.IsInRole("Administrador"))
+                        {
+                            @Html.ActionLink("Categorias", "Index", "Categoria", new { area = "" }, new { @class = "nav-item nav-link" })
+                            @Html.ActionLink("Escritores", "Create", "Escritor", new { area = "" }, new { @class = "nav-item nav-link" })
+                        }
+
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Mais
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @Html.ActionLink("Perfil", "Update", "Escritor", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Sair", "Logout", "Escritor", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Mais
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @Html.ActionLink("Perfil", "Update", "Usuario", new { area = "" }, new { @class = "dropdown-item" })
+                                @Html.ActionLink("Sair", "Logout", "Usuario", new { area = "" }, new { @class = "dropdown-item" })
+                            </div>
+                        </div>
+                    }
+
+                    <span class="navbar-text">
+                        Olá, @User.Identity.Name
+                    </span>
+                }
+                else
+                {
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Login
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @Html.ActionLink("Escritor", "Login", "Escritor", new { area = "" }, new { @class = "dropdown-item" })
+                            <a class="dropdown-item" href="#">Leitor</a>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <footer id="footer">
+        <p>&copy; 2021 - Artigos Acadêmicos</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

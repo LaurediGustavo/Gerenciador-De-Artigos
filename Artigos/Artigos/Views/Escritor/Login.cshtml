@@ -1,0 +1,35 @@
+﻿@model Artigos.Models.ModelViewEscritorLogin
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="box">
+        <div class="card-header bg-primary text-white boxTitle">
+            <h3>Login</h3>
+        </div>
+        <div class="card-body boxBody">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger estilo"})
+            <div class="form-group">
+                @Html.LabelFor(m => m.Login)
+                @Html.ValidationMessageFor(m => m.Login, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Senha)
+                @Html.ValidationMessageFor(m => m.Senha, "", new { @class = "text-danger" })
+                @Html.PasswordFor(m => m.Senha, new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <input type="submit" value="Login" class="btn btn-info" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

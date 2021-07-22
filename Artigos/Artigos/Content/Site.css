@@ -1,0 +1,50 @@
+﻿/* GERAL */
+
+footer {
+    width: 100%;
+    height: 50px;
+    background-color: #1C1C1C;
+    text-align: center;
+    color: gray;
+    position: fixed;
+    bottom: 0;
+}
+
+footer p {
+    margin-top: 14px;
+}
+
+/* PÁGINA DE LOGIN */
+
+.box {
+    width: 90%;
+    margin: auto;
+    margin-top: 80px;
+    border: 1px solid purple;
+    border-radius: 0 0 20px 20px;
+    margin-bottom: 80px;
+}
+
+.boxTitle {
+    text-align: center;
+}
+
+.boxTitle h3 {
+    font-size: 1.5rem;
+}
+
+.boxBody {
+    padding: 20px 20px 0 20px;
+}
+
+.estilo ul li {
+    list-style-type: none;
+    margin-left: -40px;
+}
+
+@media (min-width: 650px){
+    .box {
+        width: 60%;
+    }
+}
+
