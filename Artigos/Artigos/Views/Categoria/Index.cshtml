@@ -1,8 +1,49 @@
-﻿
+﻿@model Artigos.Models.ModelViewCategoria
 @{
     ViewBag.Title = "Categorias";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Categorias</h2>
+<div class="CategoriaContainer">
+    <div class="CategoriaCadastro">
+        <div>
+            @using (Html.BeginForm("Create", "Categoria", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "CategoriaCadastroErro text-danger" })
+
+                @Html.LabelFor(m => m.NomeCategoria)
+                @Html.TextBoxFor(m => m.NomeCategoria, new { @class = "form-control" })
+
+                <div class="CategoriaCadastroAtivo">
+                    @Html.LabelFor(m => m.Ativa)
+                    @Html.CheckBoxFor(m => m.Ativa)
+                </div>
+
+                <div class="CategoriaCadastroBtn">
+                    <div class="text-center">
+                        <input type="submit" value="Criar" class="btn btn-info" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="CategoriaLista">
+        <div class="form-group input-group">
+            <input name="consulta" id="txt_consulta" placeholder="Consultar" type="text" class="form-control">
+            <label class="listaLabel">Desativadas </label><input class="listaCheck" id="cbx_consulta" type="checkbox" />
+        </div>
+        <div id="lista" class="CategoriaListaExibe">
+            @*<a href="#">
+                    <div class="lista">
+                        <span class="listaNome">Banco de dados</span>
+                        <span class="listaAtiva">Ativa: sim</span>
+                    </div>
+                </a>*@
+        </div>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/Categoria.js"></script>
 
