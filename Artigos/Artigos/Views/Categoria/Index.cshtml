@@ -6,7 +6,7 @@
 
 <div class="CategoriaContainer">
     <div class="CategoriaCadastro">
-        <div>
+        <div id="formCreate" style="display: block">
             @using (Html.BeginForm("Create", "Categoria", FormMethod.Post))
             {
                 @Html.AntiForgeryToken()
@@ -27,10 +27,27 @@
                 </div>
             }
         </div>
+        <div id="formUpdate" style="display: none">
+            <form>
+                @Html.LabelFor(m => m.NomeCategoria)
+                <input type="text" class="form-control" id="nomeCategoria" />
+
+                <div class="CategoriaCadastroAtivo">
+                    @Html.LabelFor(m => m.Ativa)
+                    <input type="checkbox" id="cbxCategoria" />
+                </div>
+
+                <div class="CategoriaCadastroBtn">
+                    <div class="text-center">
+                        <input type="submit" value="Atualizar" class="btn btn-info" onclick="UpdateCategoria()" />
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
     <div class="CategoriaLista">
         <div class="form-group input-group">
-            <input name="consulta" id="txt_consulta" placeholder="Consultar" type="text" class="form-control">
+            <input name="consulta" id="txt_consulta" placeholder="Consultar" type="text" class="form-control" onkeyup="GetAll();">
             <label class="listaLabel">Desativadas </label><input class="listaCheck" id="cbx_consulta" type="checkbox" />
         </div>
         <div id="lista" class="CategoriaListaExibe">
@@ -39,7 +56,7 @@
                         <span class="listaNome">Banco de dados</span>
                         <span class="listaAtiva">Ativa: sim</span>
                     </div>
-                </a>*@
+               </a>*@
         </div>
     </div>
 </div>

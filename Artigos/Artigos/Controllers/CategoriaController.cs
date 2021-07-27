@@ -15,7 +15,7 @@ namespace Artigos.Controllers
         [HttpGet]
         public ActionResult Index(ModelViewCategoria categoria)
         {
-            if (categoria.NomeCategoria == null || categoria.NomeCategoria.Length > 0)
+            if (categoria.NomeCategoria == null)
             {
                 ModelState.AddModelError("", "Escreva um nome");
             }
@@ -68,6 +68,14 @@ namespace Artigos.Controllers
             }
 
             return RedirectToAction("Index", categoria);
+        }
+
+        [HttpGet]
+        public ActionResult Get(int? id)
+        {
+            var categoria = db.Categorias.Find(id);
+
+            return Json(categoria, JsonRequestBehavior.AllowGet);
         }
     }
 }

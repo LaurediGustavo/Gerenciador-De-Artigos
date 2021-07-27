@@ -19,7 +19,7 @@ function GetAll() {
                     check = "Sim";
                 }
 
-                html += '<a href = "#">';
+                html += '<a href = "#" onclick="Update(' + item.Id + ')">';
                 html += '<div class="lista">';
                 html += '<span class="listaNome">' + item.NomeCategoria + '</span>';
                 html += '<span class="listaAtiva">Ativa: ' + check + '</span>';
@@ -33,4 +33,35 @@ function GetAll() {
 
         }
     });
+}
+
+function Update(id) {
+    $('#formCreate').hide();
+    $('#formUpdate').show();
+
+    $.ajax({
+        url: "Categoria/Get/" + id,
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            $('#nomeCategoria').val(result.NomeCategoria);
+
+            if (result.Ativa == 1) {
+                $('#Ativa').checked;
+            }
+        },
+        error: function (result) {
+
+        }
+    });
+}
+
+function UpdateCategoria() {
+    if ($('#nomeCategoria').val() != "") {
+        
+    }
+    else {
+        alert('oiiiiiiii');
+    }
 }
