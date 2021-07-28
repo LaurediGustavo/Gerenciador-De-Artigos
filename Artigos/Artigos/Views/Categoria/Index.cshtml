@@ -4,31 +4,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
 <div class="CategoriaContainer">
     <div class="CategoriaCadastro">
-        <div id="formCreate" style="display: block">
-            @using (Html.BeginForm("Create", "Categoria", FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary(true, "", new { @class = "CategoriaCadastroErro text-danger" })
-
-                @Html.LabelFor(m => m.NomeCategoria)
-                @Html.TextBoxFor(m => m.NomeCategoria, new { @class = "form-control" })
-
-                <div class="CategoriaCadastroAtivo">
-                    @Html.LabelFor(m => m.Ativa)
-                    @Html.CheckBoxFor(m => m.Ativa)
-                </div>
-
-                <div class="CategoriaCadastroBtn">
-                    <div class="text-center">
-                        <input type="submit" value="Criar" class="btn btn-info" />
-                    </div>
-                </div>
-            }
-        </div>
-        <div id="formUpdate" style="display: none">
+        <div id="form">
             <form>
+                <span id="erro" class="erro"></span><br />
                 @Html.LabelFor(m => m.NomeCategoria)
                 <input type="text" class="form-control" id="nomeCategoria" />
 
@@ -37,9 +21,16 @@
                     <input type="checkbox" id="cbxCategoria" />
                 </div>
 
-                <div class="CategoriaCadastroBtn">
+                <div id="btnCriar" class="CategoriaCadastroBtn" style="display: block">
                     <div class="text-center">
-                        <input type="submit" value="Atualizar" class="btn btn-info" onclick="UpdateCategoria()" />
+                        <input type="submit" value="Criar" class="btn btn-info" onclick="Create()" />
+                    </div>
+                </div>
+
+                <div id="btnUpdate" class="CategoriaCadastroBtn" style="display: none">
+                    <div class="text-center">
+                        <input type="submit" value="Atualizar" id="btnUp" class="btn btn-info" /> |
+                        <a href="#" onclick="Sair()">Sair</a>
                     </div>
                 </div>
             </form>
@@ -52,11 +43,11 @@
         </div>
         <div id="lista" class="CategoriaListaExibe">
             @*<a href="#">
-                    <div class="lista">
-                        <span class="listaNome">Banco de dados</span>
-                        <span class="listaAtiva">Ativa: sim</span>
-                    </div>
-               </a>*@
+                     <div class="lista">
+                         <span class="listaNome">Banco de dados</span>
+                         <span class="listaAtiva">Ativa: sim</span>
+                     </div>
+                </a>*@
         </div>
     </div>
 </div>

@@ -218,3 +218,4 @@ C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\D
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.pdb
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.up.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Ativa1.resources
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Categoria.resources

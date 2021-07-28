@@ -179,6 +179,10 @@
     <Compile Include="Migrations\202107221900417_Ativa1.Designer.cs">
       <DependentUpon>202107221900417_Ativa1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107271802440_Categoria.cs" />
+    <Compile Include="Migrations\202107271802440_Categoria.Designer.cs">
+      <DependentUpon>202107271802440_Categoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Artigo.cs" />
     <Compile Include="Models\ArtigoCategoria.cs" />
@@ -294,6 +298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107221900417_Ativa1.resx">
       <DependentUpon>202107221900417_Ativa1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202107271802440_Categoria.resx">
+      <DependentUpon>202107271802440_Categoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

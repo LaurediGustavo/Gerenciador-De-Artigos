@@ -8,6 +8,7 @@ namespace Artigos.Models
 {
     public class ModelViewCategoria
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
         [MaxLength(50, ErrorMessage = "Esse campo não pode ser maior que 50!")]
         [Display(Name = "Nome Categoria")]

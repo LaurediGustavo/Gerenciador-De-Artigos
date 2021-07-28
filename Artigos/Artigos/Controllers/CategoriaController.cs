@@ -13,12 +13,9 @@ namespace Artigos.Controllers
         private Context db = new Context();
 
         [HttpGet]
-        public ActionResult Index(ModelViewCategoria categoria)
+        public ActionResult Index()
         {
-            if (categoria.NomeCategoria == null)
-            {
-                ModelState.AddModelError("", "Escreva um nome");
-            }
+            ModelViewCategoria categoria = new ModelViewCategoria();
 
             return View(categoria);
         }
@@ -45,6 +42,14 @@ namespace Artigos.Controllers
             return Json(categoria, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpGet]
+        public ActionResult Get(int? id)
+        {
+            var categoria = db.Categorias.Find(id);
+
+            return Json(categoria, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind (Include = "NomeCategoria, Ativa")] ModelViewCategoria categoria)
@@ -63,19 +68,32 @@ namespace Artigos.Controllers
 
                 db.Categorias.Add(new Categoria() { NomeCategoria = categoria.NomeCategoria, Ativa = ativa });
                 db.SaveChanges();
-
-                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index", categoria);
+            return Json(JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public ActionResult Get(int? id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update([Bind(Include = "Id, NomeCategoria, Ativa")] ModelViewCategoria categoria)
         {
-            var categoria = db.Categorias.Find(id);
+            if (ModelState.IsValid)
+            {
+                int ativa;
+                if (categoria.Ativa)
+                {
+                    ativa = 1;
+                }
+                else
+                {
+                    ativa = 0;
+                }
 
-            return Json(categoria, JsonRequestBehavior.AllowGet);
+                db.Entry(new Categoria() { Id = categoria.Id, NomeCategoria = categoria.NomeCategoria, Ativa = ativa}).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return Json(JsonRequestBehavior.AllowGet);
         }
     }
 }
