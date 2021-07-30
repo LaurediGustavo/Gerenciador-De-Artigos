@@ -156,3 +156,9 @@ footer p {
         height: 68vh;
     }
 }
+
+/* PERFIL */
+
+.perfilContainer {
+    margin: 20px 0 60px 0;
+}

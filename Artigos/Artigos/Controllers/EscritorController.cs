@@ -9,7 +9,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Artigos.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     public class EscritorController : Controller
     {
         private Context db = new Context();
@@ -50,6 +50,7 @@ namespace Artigos.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login()
         {
             var escritor = new ModelViewEscritorLogin();
@@ -58,6 +59,7 @@ namespace Artigos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult Login([Bind (Include = "Login, Senha")]ModelViewEscritorLogin escritor)
         {
             if (ModelState.IsValid)
@@ -133,21 +135,69 @@ namespace Artigos.Controllers
         public ActionResult Update()
         {
             var escritor = db.Escritores.Find(int.Parse(User.Identity.GetUserId()));
+            return View(new ModelViewEscritorUpdate() 
+            {
+                Nome = escritor.Nome,
+                Sobrenome = escritor.Sobrenome,
+                Login = escritor.Login,
+                Email = escritor.Email
+            });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Escritor, Administrador")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update([Bind(Include = "Nome, Sobrenome, Login, Email")]ModelViewEscritorUpdate escritor)
+        {
+            if (ModelState.IsValid)
+            {
+                Escritor es = db.Escritores.Find(int.Parse(User.Identity.GetUserId()));
+                es.Nome = escritor.Nome;
+                es.Sobrenome = escritor.Sobrenome;
+                es.Login = escritor.Login;
+                es.Email = escritor.Email;
+
+                db.Entry(es).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+
+                return View();
+            }
+
             return View(escritor);
         }
 
         [HttpPost]
         [Authorize(Roles = "Escritor, Administrador")]
         [ValidateAntiForgeryToken]
-        public ActionResult Update([Bind(Include = "Nome, Sobrenome, Login, Senha, Email")]Escritor escritor)
+        public ActionResult UpdatePassword([Bind(Include = "SenhaAntiga, SenhaNova, SenhaConfirma")] EscritorSenha senha)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(escritor).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                Escritor escritor = db.Escritores.Find(int.Parse(User.Identity.GetUserId()));
+                
+                if (escritor.Senha == senha.SenhaAntiga)
+                {
+                    if (senha.SenhaNova == senha.SenhaConfirma)
+                    {
+                        escritor.Senha = senha.SenhaConfirma;
 
-                return View(escritor);
+                        db.Entry(escritor).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        return Json("");
+                    }
+                }
             }
+
+            return Json("Preencha os campos corretamente!");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador")]
+        public ActionResult Index()
+        {
+            int id = int.Parse(User.Identity.GetUserId());
+            var escritor = db.Escritores.Where(e => e.Id != id).ToList();
 
             return View(escritor);
         }
