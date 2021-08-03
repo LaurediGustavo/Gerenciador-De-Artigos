@@ -123,8 +123,7 @@ namespace Artigos.Controllers
                     NivelAcesso = escritor.NivelAcesso});
                 db.SaveChanges();
 
-                this.Login(escritor.Login, escritor.Senha);
-                return RedirectToAction("Index", "Artigo");
+                return RedirectToAction("Index");
             }
 
             return View(escritor);
@@ -194,12 +193,62 @@ namespace Artigos.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Administrador")]
-        public ActionResult Index()
+        public ActionResult Index(string nome)
         {
             int id = int.Parse(User.Identity.GetUserId());
             var escritor = db.Escritores.Where(e => e.Id != id).ToList();
 
+            if (!String.IsNullOrEmpty(nome))
+            {
+                escritor = escritor.Where(e => e.Nome.Contains(nome) || e.Sobrenome.Contains(nome)).ToList();
+            }
+
             return View(escritor);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrador")]
+        public ActionResult Detalhes(int? Id)
+        {
+            if (Id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            Escritor escritor = db.Escritores.Find(Id);
+            if (escritor == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Items = this.Roles();
+            return View(escritor);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Administrador")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Detalhes([Bind(Include = "Id,NivelAcesso")] Escritor escritor)
+        {
+            if (ModelState.IsValid)
+            {
+                if (escritor == null)
+                {
+                    return Json("Informações Inválidas!");
+                }
+
+                Escritor es = db.Escritores.Find(escritor.Id);
+
+                if (escritor == null)
+                {
+                    return Json("Informações Inválidas!");
+                }
+
+                es.NivelAcesso = escritor.NivelAcesso;
+                db.Entry(es).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return View(es);
         }
     }
 }
