@@ -6,6 +6,8 @@ using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System.Net.Mail;
+using System.Net;
 
 namespace Artigos.Controllers
 {
@@ -13,6 +15,54 @@ namespace Artigos.Controllers
     public class EscritorController : Controller
     {
         private Context db = new Context();
+
+        //Envia um email com a senha
+        private void EnviarEmail(Escritor escritor)
+        {
+            using (MailMessage mm = new MailMessage("artigosacademicos1@gmail.com", escritor.Email))
+            {
+                String body =
+                "<h1>Cadastro concluido!</h1>" +
+                "<p>Olá, " + escritor.Nome + " " + escritor.Sobrenome + " a sua senha de acesso é: " + escritor.Senha + "</p>" +
+                "<p></p>" +
+                "<a href='https://localhost:44371/Escritor/Login'>Artigos Acadêmicos</a>";
+
+                mm.IsBodyHtml = true;
+                mm.Subject = "Senha de acesso";
+                mm.Body = body;
+                using (SmtpClient smtp = new SmtpClient())
+                {
+                    smtp.Host = "smtp.gmail.com";
+                    smtp.EnableSsl = true;
+                    smtp.UseDefaultCredentials = false;
+                    NetworkCredential NetworkCred = new NetworkCredential("", "");
+                    smtp.Credentials = NetworkCred;
+                    smtp.Port = 587;
+                    smtp.Send(mm);
+                }
+            }
+        }
+
+        //Cria uma senha aleatória
+        private string GerarSenha()
+        {
+            const string CAIXA_BAIXA = "abcdefghijklmnopqrstuvwxyz";
+            const string CAIXA_ALTA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string NUMEROS = "0123456789";
+            const string ESPECIAIS = "@#$%&";
+            string senha = "";
+
+            Random random = new Random();
+            for (int i = 0; i < 2; i++)
+            {
+                senha += CAIXA_BAIXA[random.Next(0, CAIXA_BAIXA.Length - 1)];
+                senha += CAIXA_ALTA[random.Next(0, CAIXA_ALTA.Length - 1)];
+                senha += NUMEROS[random.Next(0, NUMEROS.Length - 1)];
+                senha += ESPECIAIS[random.Next(0, ESPECIAIS.Length - 1)];
+            }
+
+            return senha;
+        }
 
         //Método para realizar login
         private Boolean Login(string login, string senha)
@@ -111,18 +161,26 @@ namespace Artigos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]
-        public ActionResult Register([Bind(Include = "Nome, Sobrenome, Login, Senha, Email, NivelAcesso")]ModelViewEscritorCadastro escritor)
+        public ActionResult Register([Bind(Include = "Nome, Sobrenome, Login, Email, NivelAcesso")]ModelViewEscritorCadastro escritor)
         {
             escritor.Items = this.Roles();
 
             if (ModelState.IsValid)
             {
-                string role = escritor.NivelAcesso;
-                db.Escritores.Add(new Escritor() { Nome = escritor.Nome, Sobrenome = escritor.Sobrenome, 
-                    Login = escritor.Login, Senha = escritor.Senha, Email = escritor.Email, 
-                    NivelAcesso = escritor.NivelAcesso});
+                Escritor es = new Escritor()
+                {
+                    Nome = escritor.Nome,
+                    Sobrenome = escritor.Sobrenome,
+                    Login = escritor.Login,
+                    Senha = this.GerarSenha(),
+                    Email = escritor.Email,
+                    NivelAcesso = escritor.NivelAcesso
+                };
+
+                db.Escritores.Add(es);
                 db.SaveChanges();
 
+                this.EnviarEmail(es);
                 return RedirectToAction("Index");
             }
 
@@ -227,7 +285,7 @@ namespace Artigos.Controllers
         [HttpPost]
         [Authorize(Roles = "Administrador")]
         [ValidateAntiForgeryToken]
-        public ActionResult Detalhes([Bind(Include = "Id,NivelAcesso")] Escritor escritor)
+        public ActionResult Detalhes([Bind(Include = "Id,NivelAcesso")] ModelViewEscritorAcesso escritor)
         {
             if (ModelState.IsValid)
             {
@@ -246,9 +304,12 @@ namespace Artigos.Controllers
                 es.NivelAcesso = escritor.NivelAcesso;
                 db.Entry(es).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+
+                return Json("");
             }
 
-            return View(es);
+            ViewBag.Items = this.Roles();
+            return Json("Preencha os campos corretamente!");
         }
     }
 }

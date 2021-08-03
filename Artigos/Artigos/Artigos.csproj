@@ -189,6 +189,7 @@
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Escritor.cs" />
+    <Compile Include="ViewModel\ModelViewEscritorAcesso.cs" />
     <Compile Include="ViewModel\ModelViewEscritorSenha.cs" />
     <Compile Include="ViewModel\ModelViewCategoria.cs" />
     <Compile Include="ViewModel\ModelViewEscritorCadastro.cs" />
@@ -277,6 +278,7 @@
     <Content Include="Views\Escritor\Update.cshtml" />
     <Content Include="Views\Escritor\Index.cshtml" />
     <Content Include="Views\Escritor\Detalhes.cshtml" />
+    <Content Include="Views\Artigo\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

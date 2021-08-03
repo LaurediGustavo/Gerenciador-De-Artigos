@@ -25,10 +25,11 @@
             contentType: "application/x-www-form-urlencoded;charset=utf-8",
             dataType: "json",
             success: function (result) {
-                $('#nivelAcesso').text(result);
+                alert("Alteração realizada com sucesso!");
+                window.location.reload();
             },
             error: function (result) {
-                alert("Erro na Alteração!");
+                $('#nivelAcesso').text(result.fail);
             }
         });
     }
