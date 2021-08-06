@@ -183,12 +183,17 @@
     <Compile Include="Migrations\202107271802440_Categoria.Designer.cs">
       <DependentUpon>202107271802440_Categoria.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108041247053_Ativa2.cs" />
+    <Compile Include="Migrations\202108041247053_Ativa2.Designer.cs">
+      <DependentUpon>202108041247053_Ativa2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Artigo.cs" />
     <Compile Include="Models\ArtigoCategoria.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Escritor.cs" />
+    <Compile Include="ViewModel\ModelViewArtigo.cs" />
     <Compile Include="ViewModel\ModelViewEscritorAcesso.cs" />
     <Compile Include="ViewModel\ModelViewEscritorSenha.cs" />
     <Compile Include="ViewModel\ModelViewCategoria.cs" />
@@ -219,6 +224,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\Artigo.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -310,6 +316,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202107271802440_Categoria.resx">
       <DependentUpon>202107271802440_Categoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108041247053_Ativa2.resx">
+      <DependentUpon>202108041247053_Ativa2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

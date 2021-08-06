@@ -26,21 +26,22 @@ namespace Artigos.Controllers
         [Authorize(Roles = "Escritor, Administrador")]
         public ActionResult Create()
         {
-            Artigo artigos = new Artigo();
+            ModelViewArtigo artigos = new ModelViewArtigo();
+            artigos.Categorias = db.Categorias.Where(c => c.Ativa == 1).ToList();
 
             return View(artigos);
         }
 
         [HttpPost]
         [Authorize(Roles = "Escritor, Administrador")]
-        public ActionResult Create([Bind(Include = "Titulo,Capa,Ativo")] Artigo artigo)
+        public ActionResult Create([Bind(Include = "Titulo,Capa")] ModelViewArtigo artigo)
         {
             if (ModelState.IsValid)
             {
-                artigo.EscritorId = int.Parse(User.Identity.GetUserId());
+                //artigo.EscritorId = int.Parse(User.Identity.GetUserId());
 
-                db.Artigos.Add(artigo);
-                db.SaveChanges();
+                //db.Artigos.Add(artigo);
+                //db.SaveChanges();
 
                 return RedirectToAction("Index");
             }

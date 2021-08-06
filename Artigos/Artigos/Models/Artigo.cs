@@ -20,6 +20,6 @@ namespace Artigos.Models
         public byte[] Capa { get; set; }
 
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
-        public char Ativo { get; set; }
+        public int Ativo { get; set; }
     }
 }
