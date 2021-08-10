@@ -206,6 +206,7 @@
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Escritor.cs" />
     <Compile Include="ViewModel\ModelViewArtigo.cs" />
+    <Compile Include="ViewModel\ModelViewArtigoEdicao.cs" />
     <Compile Include="ViewModel\ModelViewEscritorAcesso.cs" />
     <Compile Include="ViewModel\ModelViewEscritorSenha.cs" />
     <Compile Include="ViewModel\ModelViewCategoria.cs" />
@@ -237,7 +238,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\Artigo.js" />
+    <Content Include="Scripts\ArtigoUpdate.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -298,6 +299,7 @@
     <Content Include="Views\Escritor\Index.cshtml" />
     <Content Include="Views\Escritor\Detalhes.cshtml" />
     <Content Include="Views\Artigo\Create.cshtml" />
+    <Content Include="Views\Artigo\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -225,11 +225,15 @@ hr {
     }
 }
 
-/* CADASTRO ARTIGO */
+/* UPDATE ARTIGO */
+
+.artigoContainer {
+    margin: 20px 0 60px 0;
+}
 
 .listaCategoria {
     width: 100%;
-    height: 30%;
+    height: 150px;
     margin-bottom: 10px;
     overflow-y: auto;
     display: flex;
@@ -239,7 +243,7 @@ hr {
 .listaCategoriaSelecionada {
     padding: 5px;
     border: 1px solid black;
-    width: 250px;
+    width: 260px;
     height: 40px;
     margin: 0 10px 10px 0;
 }

@@ -28,18 +28,7 @@
                 @Html.LabelFor(model => model.Ativa)
                 @Html.CheckBoxFor(model => model.Ativa, new { @class = "form-check" })
             </div>
-
-            @*<div class="form-group">
-                    @Html.LabelFor(model => model.Categorias)
-                    @Html.DropDownListFor(Model => Model.Categorias, new SelectList(Model.Categorias, "Id", "NomeCategoria"), "Selecione", new { @class = "form-control" })
-                </div>*@
         </div>
-        <!--<div class="listaCategoria" id="divCategoria">-->
-        @*<div class="listaCategoriaSelecionada">
-                <span>Nome Categoria</span>
-                <input type="submit" value="X" />
-            </div>*@
-        <!--</div>-->
         <div class="text-center">
             <input type="submit" value="Salvar" class="btn btn-info" onclick="Create()" />
         </div>

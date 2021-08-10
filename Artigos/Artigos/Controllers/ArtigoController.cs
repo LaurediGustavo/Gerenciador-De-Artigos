@@ -43,6 +43,7 @@ namespace Artigos.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Escritor, Administrador")]
+        [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Titulo,Image")] ModelViewArtigo artigo, bool Ativa)
         {
             if (ModelState.IsValid)
@@ -86,6 +87,41 @@ namespace Artigos.Controllers
             }
 
             return true;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Escritor, Administrador")]
+        public ActionResult Update(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            Artigo artigo = db.Artigos.Find(id);
+            if (artigo == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(new ModelViewArtigoEdicao() 
+            { 
+                Id = artigo.Id,
+                Titulo = artigo.Titulo,
+                Capa = artigo.Capa,
+                Ativa = (artigo.Ativo == 1)? true : false,
+                Categorias = db.Categorias.Where(c => c.Ativa == 1).ToList()
+            });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Escritor, Administrador")]
+        public JsonResult UpdateCategoria(ModelViewArtigoEdicaoCategoria artigo)
+        {
+            if (ModelState.IsValid)
+            {
+                return Json("Categorias Atualizadas com sucesso!");
+            }
+            return Json("Selecione os dados corretamente!");
         }
     }
 }

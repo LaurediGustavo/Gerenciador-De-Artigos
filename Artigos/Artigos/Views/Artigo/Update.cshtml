@@ -1,0 +1,58 @@
+﻿@model Artigos.Models.ModelViewArtigoEdicao
+
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="artigoContainer">
+    @using (Html.BeginForm("Update", "Artigo", FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Titulo)
+            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Capa)
+
+            @{
+                var base64 = Convert.ToBase64String(Model.Capa);
+                var img = String.Format("data:image/gif;base64,{0}", base64);
+            }
+            <img src="@img" style="width: 100px; height: auto;" class="form-control" />
+            <br />
+            <label>Alterar Capa</label>
+            @Html.ValidationMessageFor(model => model.Capa, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.Image, new { @class = "form-control", type = "file" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Ativa)
+            @Html.CheckBoxFor(model => model.Ativa, new { @class = "form-check" })
+        </div>
+        <br />
+        <div class="form-group text-center">
+            <input type="submit" value="Salvar" class="btn btn-info" />
+        </div>
+    }
+    <hr />
+    <br />
+    <div class="form-group">
+        @Html.LabelFor(model => model.Categorias)
+        @Html.DropDownListFor(Model => Model.Categorias, new SelectList(Model.Categorias, "Id", "NomeCategoria"), "Selecione", new { @class = "form-control" })
+    </div>
+    <div class="listaCategoria" id="divCategoria">
+        @*<div class="listaCategoriaSelecionada">
+                <span>Nome Categoria</span>
+                <input type="submit" value="X" />
+            </div>*@
+    </div>
+    <div class="form-group text-center">
+        <input type="submit" value="Salvar" onclick="Create(@Model.Id)" class="btn btn-info" />
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/ArtigoUpdate.js"></script>
