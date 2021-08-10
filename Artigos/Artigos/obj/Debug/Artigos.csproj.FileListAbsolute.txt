@@ -220,3 +220,11 @@ C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\D
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Ativa1.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Categoria.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Ativa2.resources
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\System.Net.Http.Formatting.dll
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\System.Web.Http.dll
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\System.Net.Http.Formatting.xml
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\System.Web.Http.xml
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.dll
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.Mvc.dll
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.xml
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.Mvc.xml

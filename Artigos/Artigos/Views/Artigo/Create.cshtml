@@ -1,47 +1,47 @@
 ﻿@model Artigos.Models.ModelViewArtigo
+
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="indexEscritorContainer margin">
-    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+<div class="indexEscritorContainer">
+    @using (Html.BeginForm("Create", "Artigo", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
-    }
-    <div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Titulo)
-            <span class="text-danger" id="spanTitulo"></span>
-            <input type="text" class="form-control" id="txtTitulo" maxlength="100" />
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Capa)
-            <span class="text-danger" id="spanCapa"></span>
-            <input type="file" class="form-control" id="txtCapa" />
-        </div>
+        <div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Titulo)
+                @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(model => model.Titulo, new { @class = "form-control" } )
+            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Ativo)
-            <input type="checkbox" id="txtAtivo" class="form-check" />
-        </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Image)
+                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.TextBoxFor(m => m.Image, new { type = "file", @class = "form-control" })
+            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Categorias)
-            @Html.DropDownListFor(Model => Model.Categorias, new SelectList(Model.Categorias, "Id", "NomeCategoria"), "Selecione", new { @class = "form-control" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ativa)
+                @Html.CheckBoxFor(model => model.Ativa, new { @class = "form-check" })
+            </div>
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.Categorias)
+                    @Html.DropDownListFor(Model => Model.Categorias, new SelectList(Model.Categorias, "Id", "NomeCategoria"), "Selecione", new { @class = "form-control" })
+                </div>*@
         </div>
-    </div>
-    <div class="listaCategoria" id="divCategoria">
+        <!--<div class="listaCategoria" id="divCategoria">-->
         @*<div class="listaCategoriaSelecionada">
-            <span>Nome Categoria</span>
-            <input type="submit" value="X" />
-        </div>*@
-    </div>
-    <div class="text-center">
-        <input type="submit" value="Salvar" class="btn btn-info" onclick="Create()" />
-    </div>
+                <span>Nome Categoria</span>
+                <input type="submit" value="X" />
+            </div>*@
+        <!--</div>-->
+        <div class="text-center">
+            <input type="submit" value="Salvar" class="btn btn-info" onclick="Create()" />
+        </div>
+    }
 </div>
-
-@Scripts.Render("~/bundles/jquery")
-<script src="~/Scripts/Artigo.js"></script>

@@ -11,13 +11,10 @@ namespace Artigos.Models
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
         [MaxLength(100, ErrorMessage = "Digite no máximo 100 caracteres!")]
         public string Titulo { get; set; }
-
-        [Required(ErrorMessage = "Esse campo é obrigatório!")]
+        [Required]
         [DataType(DataType.Upload)]
-        public HttpPostedFileBase Capa { get; set; }
-
-        public List<Categoria> Categorias { get; set; }
-
-        public Boolean Ativo { get; set; }
+        [Display(Name = "Capa")]
+        public HttpPostedFileBase Image { get; set; }
+        public bool Ativa { get; set; }
     }
 }
