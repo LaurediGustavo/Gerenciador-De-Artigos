@@ -103,6 +103,11 @@ namespace Artigos.Controllers
                 return HttpNotFound();
             }
 
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            {
+                return HttpNotFound();
+            }
+
             return View(new ModelViewArtigoEdicao() 
             { 
                 Id = artigo.Id,
@@ -113,15 +118,112 @@ namespace Artigos.Controllers
             });
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Escritor, Administrador")]
+        public JsonResult PegarCategorias(int? id)
+        {
+            if (id == null)
+            {
+                return Json("Id inválido!");
+            }
+
+            Artigo artigo = db.Artigos.Find(id);
+            if (artigo == null)
+            {
+                return Json("Id inválido!");
+            }
+
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            {
+                return Json("Id inválido!");
+            }
+
+            var categorias = (from c in db.Categorias join
+                                a in db.ArtigoCategorias on
+                                c.Id equals a.CategoriaId where
+                                a.ArtigoId == id
+                                select new
+                                {
+                                    c.Id,
+                                    c.NomeCategoria
+                                }).ToList();
+
+            return Json(categorias, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         [Authorize(Roles = "Escritor, Administrador")]
+        [ValidateAntiForgeryToken]
         public JsonResult UpdateCategoria(ModelViewArtigoEdicaoCategoria artigo)
         {
             if (ModelState.IsValid)
             {
+                this.ValidarCategoria(artigo);
                 return Json("Categorias Atualizadas com sucesso!");
             }
+
             return Json("Selecione os dados corretamente!");
+        }
+
+        private void ValidarCategoria(ModelViewArtigoEdicaoCategoria artigo)
+        {
+            var categorias = (from c in db.Categorias join
+                a in db.ArtigoCategorias on
+                c.Id equals a.CategoriaId where
+                a.ArtigoId == artigo.Id
+                select new
+                {
+                    c.Id,
+                }).ToList();
+
+            if (artigo.Categorias != null)
+            {
+                bool c;
+
+                foreach (var item in categorias)
+                {
+                    c = true;
+                    foreach (var i in artigo.Categorias)
+                    {
+                        if (item.Id == i.Id)
+                        {
+                            c = false;
+                            break;
+                        }
+                    }
+
+                    if (c)
+                    {
+                        ArtigoCategoria categoria = db.ArtigoCategorias.Where(a => a.ArtigoId == artigo.Id && a.CategoriaId == item.Id).FirstOrDefault();
+                        db.ArtigoCategorias.Remove(categoria);
+                    }
+                }
+
+                foreach (var item in artigo.Categorias)
+                {
+                    c = true;
+                    foreach (var i in categorias)
+                    {
+                        if (item.Id == i.Id)
+                        {
+                            c = false;
+                            break;
+                        }
+                    }
+
+                    if (c)
+                    {
+                        db.ArtigoCategorias.Add(new ArtigoCategoria() 
+                        { 
+                            ArtigoId = artigo.Id,
+                            CategoriaId = item.Id
+                        });
+                    }
+                }
+
+                db.SaveChanges();
+            }
         }
     }
 }
+

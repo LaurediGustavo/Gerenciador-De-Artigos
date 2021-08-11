@@ -1,4 +1,8 @@
-﻿const cate = document.querySelector('#Categorias');
+﻿$(document).ready(function () {
+    PegarCategorias($('#idArtigo').val());
+});
+
+const cate = document.querySelector('#Categorias');
 
 cate.addEventListener('change', SelecionaCategoria);
 //Array que armazena as categorias selecionadas
@@ -63,27 +67,78 @@ function removerCategoria(id) {
 
 function Create(id) {
     if (Categorias.length != 0) {
-        var artigo = {
-            Id: id,
-            Categorias: Categorias
+        var controle = true;
+        //Ela pode vir vazia do banco de dados
+        if (CategoriasBanco.length == 0) {
+            controle = false;
         }
 
-        $.ajax({
-            url: "/Artigo/UpdateCategoria",
-            type: "POST",
-            data: JSON.stringify(artigo),
-            contentType: "application/json;charset=utf-8",
-            dataType: "json",
-            beforeSend: function (result) {
-                result.setRequestHeader("RequestVerificationToken",
-                    $('input:hidden[name="__RequestVerificationToken"]').val());
-            },
-            success: function (result) {
-                alert(result);
-            },
-            error: function () {
-                alert("Erro ao cadastrar as categorias");
+        for (var i = 0; i < CategoriasBanco.length; i++) {
+            for (var j = 0; j < Categorias.length; j++) {
+                if (CategoriasBanco[i].Id == Categorias[j].Id) {
+                    break;
+                }
+                else {
+                    controle = false;
+                    break;
+                }
             }
-        })
+
+            if (controle == false) {
+                break;
+            }
+        }
+
+        if (controle == false) {
+            var artigo = {
+                Id: id,
+                Categorias: Categorias
+            }
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+            var artigos = JSON.stringify(artigo);
+
+            $.ajax({
+                url: "/Artigo/UpdateCategoria",
+                type: "POST",
+                data: {
+                    __RequestVerificationToken: token,
+                    artigo: artigos
+                },
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    alert(result);
+                },
+                error: function () {
+                    alert("Erro ao cadastrar as categorias");
+                }
+            });
+        }
     }
+}
+
+var CategoriasBanco = [];
+function PegarCategorias(id) {
+    $.ajax({
+        url: "/Artigo/PegarCategorias/" + id,
+        type: "GET",
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            $.each(result, function (key, item) {
+                var Categoria = new Object();
+                Categoria.Id = item.Id;
+                Categoria.NomeCategoria = item.NomeCategoria;
+                CategoriasBanco.push(Categoria);
+                Categorias.push(Categoria);
+            });
+
+            PreencharDiv();
+        },
+        error: function () {
+            alert("Erro ao buscar as categorias");
+        }
+    });
 }

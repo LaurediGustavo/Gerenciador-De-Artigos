@@ -6,8 +6,11 @@
 }
 
 <div class="artigoContainer">
+    @Html.HiddenFor(model => model.Id, new { id = "idArtigo"})
     @using (Html.BeginForm("Update", "Artigo", FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
     {
+        @Html.AntiForgeryToken()
+
         <div class="form-group">
             @Html.LabelFor(model => model.Titulo)
             @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
