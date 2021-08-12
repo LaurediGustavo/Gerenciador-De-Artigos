@@ -20,7 +20,6 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Image)
                 @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 @Html.TextBoxFor(m => m.Image, new { type = "file", @class = "form-control" })
             </div>
 

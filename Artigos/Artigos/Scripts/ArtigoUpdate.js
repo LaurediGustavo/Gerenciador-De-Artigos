@@ -67,44 +67,21 @@ function removerCategoria(id) {
 
 function Create(id) {
     if (Categorias.length != 0) {
-        var controle = true;
-        //Ela pode vir vazia do banco de dados
-        if (CategoriasBanco.length == 0) {
-            controle = false;
-        }
 
-        for (var i = 0; i < CategoriasBanco.length; i++) {
-            for (var j = 0; j < Categorias.length; j++) {
-                if (CategoriasBanco[i].Id == Categorias[j].Id) {
-                    break;
-                }
-                else {
-                    controle = false;
-                    break;
-                }
-            }
-
-            if (controle == false) {
-                break;
-            }
-        }
+        var controle = ValidarCategoria();
 
         if (controle == false) {
-            var artigo = {
-                Id: id,
-                Categorias: Categorias
-            }
 
             var form = $('#__AjaxAntiForgeryForm');
             var token = $('input[name="__RequestVerificationToken"]', form).val();
-            var artigos = JSON.stringify(artigo);
 
             $.ajax({
                 url: "/Artigo/UpdateCategoria",
                 type: "POST",
                 data: {
                     __RequestVerificationToken: token,
-                    artigo: artigos
+                    id: id,
+                    categorias: Categorias
                 },
                 contentType: "application/x-www-form-urlencoded;charset=utf-8",
                 dataType: "json",
@@ -117,6 +94,51 @@ function Create(id) {
             });
         }
     }
+}
+
+//Valida as categorias para poder mandar para o servidor
+function ValidarCategoria() {
+    var controle = true;
+    //Ela pode vir vazia do banco de dados
+    if (CategoriasBanco.length == 0) {
+        controle = false;
+
+        return controle;
+    }
+
+    for (var i = 0; i < CategoriasBanco.length; i++) {
+        for (var j = 0; j < Categorias.length; j++) {
+            if (CategoriasBanco[i].Id == Categorias[j].Id) {
+                controle = true;
+                break;
+            }
+            else {
+                controle = false;
+            }
+        }
+
+        if (controle == false) {
+            return controle;
+        }
+    }
+
+    for (var i = 0; i < Categorias.length; i++) {
+        for (var j = 0; j < CategoriasBanco.length; j++) {
+            if (CategoriasBanco[j].Id == Categorias[i].Id) {
+                controle = true;
+                break;
+            }
+            else {
+                controle = false;
+            }
+        }
+
+        if (controle == false) {
+            return controle;
+        }
+    }
+
+    return controle;
 }
 
 var CategoriasBanco = [];

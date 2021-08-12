@@ -8,12 +8,13 @@ namespace Artigos.Models
 {
     public class ModelViewArtigoEdicao
     {
+        [Required]
         public int Id { get; set; }
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
         [MaxLength(100, ErrorMessage = "Digite no máximo 100 caracteres!")]
         public string Titulo { get; set; }
         [DataType(DataType.Upload)]
-        [Display(Name = "Capa")]
+        [Display(Name = "Alterar Capa")]
         public HttpPostedFileBase Image { get; set; }
         public Byte[] Capa { get; set; }
         public bool Ativa { get; set; }

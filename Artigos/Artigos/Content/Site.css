@@ -173,7 +173,17 @@ hr {
 /* PERFIL */
 
 .perfilContainer {
-    margin: 20px 0 60px 0;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+
+@media (min-width: 768px) {
+    .perfilContainer {
+        width: 80%;
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 60px;
+    }
 }
 
 /* Escritor */
@@ -229,6 +239,7 @@ hr {
 
 .artigoContainer {
     margin: 20px 0 60px 0;
+    width: 100%;
 }
 
 .listaCategoria {
@@ -252,6 +263,15 @@ hr {
     float: right;
     background-color: white;
     border: none;
+}
+
+@media (min-width: 768px) {
+    .artigoContainer {
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 60px;
+        width: 80%;
+    }
 }
 
 /* LISTA DE ARTIGOS ESCRITOR */

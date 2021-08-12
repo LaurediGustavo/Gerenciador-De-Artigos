@@ -7,7 +7,7 @@
 
 <div class="artigoContainer">
     @Html.HiddenFor(model => model.Id, new { id = "idArtigo"})
-    @using (Html.BeginForm("Update", "Artigo", FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+    @using (Html.BeginForm("Update", "Artigo", FormMethod.Post, new { id = "__AjaxAntiForgeryForm", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
 
@@ -26,9 +26,9 @@
             }
             <img src="@img" style="width: 100px; height: auto;" class="form-control" />
             <br />
-            <label>Alterar Capa</label>
-            @Html.ValidationMessageFor(model => model.Capa, "", new { @class = "text-danger" })
-            @Html.TextBoxFor(model => model.Image, new { @class = "form-control", type = "file" })
+            @Html.LabelFor(model => model.Image)
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+            @Html.TextBoxFor(model => model.Image, new { type = "file", @class = "form-control" })
         </div>
 
         <div class="form-group">
@@ -37,7 +37,8 @@
         </div>
         <br />
         <div class="form-group text-center">
-            <input type="submit" value="Salvar" class="btn btn-info" />
+            <input type="submit" value="Salvar" class="btn btn-info" /> |
+            @Html.ActionLink("Editar Texto", "Index", "Paragrafo", new { Id = Model.Id, area = "" }, new { @class = "btn btn-info" })
         </div>
     }
     <hr />

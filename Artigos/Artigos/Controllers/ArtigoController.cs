@@ -97,7 +97,7 @@ namespace Artigos.Controllers
             {
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
-            Artigo artigo = db.Artigos.Find(id);
+            Artigo artigo = this.Artigo(id.Value);
             if (artigo == null)
             {
                 return HttpNotFound();
@@ -116,6 +116,48 @@ namespace Artigos.Controllers
                 Ativa = (artigo.Ativo == 1)? true : false,
                 Categorias = db.Categorias.Where(c => c.Ativa == 1).ToList()
             });
+        }
+
+        public Artigo Artigo(int id)
+        {
+            Artigo artigo = db.Artigos.Find(id);
+            return artigo;
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Escritor, Administrador")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update([Bind (Include = "Id,Titulo")]ModelViewArtigoEdicao artigo, HttpPostedFileBase Image, bool Ativa)
+        {
+            Artigo ar = this.Artigo(artigo.Id);
+            artigo.Capa = ar.Capa;
+            artigo.Categorias = db.Categorias.Where(c => c.Ativa == 1).ToList();
+
+            if (ModelState.IsValid)
+            {
+                if (Image != null)
+                {
+                    bool img = this.ValidarImg(Image);
+
+                    if (!img)
+                    {
+                        ModelState.AddModelError("Image", "As extensões permitidas são: jpg, png, gif e o tamanho máximo é de 2mb");
+                        return View(artigo);
+                    }
+
+                    BinaryReader binary = new BinaryReader(Image.InputStream);
+                    ar.Capa = binary.ReadBytes(Image.ContentLength);
+                }
+
+                ar.Titulo = artigo.Titulo;
+                ar.Ativo = (Ativa) ? 1 : 0;
+
+                db.Entry(ar).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Update", ar.Id);
+            }
+
+            return View(artigo);
         }
 
         [HttpGet]
@@ -154,17 +196,36 @@ namespace Artigos.Controllers
         [HttpPost]
         [Authorize(Roles = "Escritor, Administrador")]
         [ValidateAntiForgeryToken]
-        public JsonResult UpdateCategoria(ModelViewArtigoEdicaoCategoria artigo)
+        public JsonResult UpdateCategoria(int? id, List<Categoria> categorias)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                this.ValidarCategoria(artigo);
-                return Json("Categorias Atualizadas com sucesso!");
+                return Json("Selecione os dados corretamente!");
             }
 
-            return Json("Selecione os dados corretamente!");
+            Artigo artigo = db.Artigos.Find(id);
+            if (artigo == null)
+            {
+                return Json("Selecione os dados corretamente!");
+            }
+
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            {
+                return Json("Selecione os dados corretamente!");
+            }
+            else
+            {
+
+                this.ValidarCategoria(new ModelViewArtigoEdicaoCategoria() 
+                { 
+                    Id = id.Value,
+                    Categorias = categorias
+                });
+                return Json("Categorias Atualizadas com sucesso!");
+            }
         }
 
+        //Adiciona ou remove as categorias
         private void ValidarCategoria(ModelViewArtigoEdicaoCategoria artigo)
         {
             var categorias = (from c in db.Categorias join
