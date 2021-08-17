@@ -207,6 +207,7 @@
     <Compile Include="Models\Escritor.cs" />
     <Compile Include="ViewModel\ModelViewArtigo.cs" />
     <Compile Include="ViewModel\ModelViewArtigoEdicao.cs" />
+    <Compile Include="ViewModel\ModelViewArtigoEscritor.cs" />
     <Compile Include="ViewModel\ModelViewEscritorAcesso.cs" />
     <Compile Include="ViewModel\ModelViewEscritorSenha.cs" />
     <Compile Include="ViewModel\ModelViewCategoria.cs" />

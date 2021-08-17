@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Artigos.Models.Artigo>
+﻿@model PagedList.IPagedList<Artigos.Models.ModelViewArtigoEscritor>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -14,17 +14,11 @@
         </p>
         @using (Html.BeginForm("Index", "Artigo", FormMethod.Get))
         {
-    <div class="input-group">
-        <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
-               aria-describedby="search-addon" name="nome" />
-        <input type="checkbox" name="ativa" class="form-check check" /><label class="checkLabel">Desativadas</label>
-        @if (User.IsInRole("Administrador"))
-        {
-            <input type="checkbox" name="todas" class="form-check check" /><label class="checkLabel">Todas</label>
-        }
-
-        <input type="submit" class="btn btn-outline-primary" value="Buscar" />
-    </div>
+            <div class="input-group">
+                <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
+                       aria-describedby="search-addon" name="nome" />
+                <input type="submit" class="btn btn-outline-primary" value="Buscar" />
+            </div>
         }
     </div>
     <div class="divArtigos">
@@ -36,11 +30,22 @@
                     @{ 
                         var base64 = Convert.ToBase64String(item.Capa);
                         var img = String.Format("data:image/gif;base64,{0}", base64);
+
+                        string ativa = "Não";
+                        if(item.Ativo == 1)
+                        {
+                            ativa = "Sim";
+                        }
                     } 
                     <img src="@img" />
                 </div>
                 <div class="artigoTexto">
-                    <p>@item.Titulo</p>
+                    <div class="artigoTextoTitulo">
+                        <p>@item.Titulo</p>
+                    </div>
+                    <div class="artigoTextoInfo">
+                        <span>By: @item.Nome @item.Sobrenome. Ativa: @ativa</span>
+                    </div>
                 </div>
                 <div class="artigoBtn">
                     @Html.ActionLink("Editar", "Update", new { id = item.Id }, new { @class = "btn btn-outline-primary" })

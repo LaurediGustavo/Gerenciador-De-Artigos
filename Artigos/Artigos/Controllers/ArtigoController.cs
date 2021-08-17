@@ -17,17 +17,26 @@ namespace Artigos.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Escritor, Administrador")]
-        public ActionResult Index(int? page, string nome, bool? ativa, bool? todas)
+        public ActionResult Index(int? page, string nome)
         {
-            ativa = (ativa ?? false);
-            todas = (todas ?? false);
+            var artigos = (from a in db.Artigos
+                       join u in db.Escritores on
+                       a.EscritorId equals u.Id
+                       select new 
+                       {
+                            a.Id,
+                            a.EscritorId,
+                            a.Titulo,
+                            a.Capa,
+                            a.Ativo,
+                            u.Nome,
+                            u.Sobrenome
+                       }).OrderByDescending(a => a.Id).ToList();
 
-            int id = int.Parse(User.Identity.GetUserId());
-
-            var artigos = db.Artigos.OrderByDescending(a => a.Id).ToList(); ;
-            if (!todas.Value)
+            if (User.IsInRole("Escritor"))
             {
-                artigos = db.Artigos.OrderByDescending(a => a.Id).Where(a => a.EscritorId == id).ToList();
+                int id = int.Parse(User.Identity.GetUserId());
+                artigos = artigos.Where(a => a.EscritorId == id).ToList();
             }
 
             if (!String.IsNullOrEmpty(nome))
@@ -35,15 +44,25 @@ namespace Artigos.Controllers
                 artigos = artigos.Where(a => a.Titulo.Contains(nome)).ToList();
             }
 
-            if (ativa.Value)
+            List<ModelViewArtigoEscritor> artigo = new List<ModelViewArtigoEscritor>(); ;
+            foreach(var item in artigos)
             {
-                artigos = artigos.Where(a => a.Ativo == 0).ToList();
+                artigo.Add(new ModelViewArtigoEscritor()
+                {
+                    Id = item.Id,
+                    EscritorId = item.EscritorId,
+                    Titulo = item.Titulo,
+                    Capa = item.Capa,
+                    Ativo = item.Ativo,
+                    Nome = item.Nome,
+                    Sobrenome = item.Sobrenome
+                });
             }
 
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return View(artigos.ToPagedList(pageNumber, pageSize));
+            return View(artigo.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]

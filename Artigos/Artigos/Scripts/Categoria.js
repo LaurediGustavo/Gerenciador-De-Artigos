@@ -130,6 +130,7 @@ function Update(id) {
                 $('#erro').text('');
                 LimpaCampo();
                 GetAll();
+                Sair();
             },
             error: function () {
                 alert('Erro ao atualizar!');

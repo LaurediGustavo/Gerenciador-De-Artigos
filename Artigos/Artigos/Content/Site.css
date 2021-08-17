@@ -321,7 +321,20 @@ hr {
 .artigoTexto {
     height: 100%;
     width: 50%;
-    font-size: 1rem;
+    font-size: 0.8rem;
+}
+
+.artigoTextoTitulo {
+    width: 100%;
+    height: 75%;
+    padding-top: 10px;
+}
+
+.artigoTextoInfo {
+    width: 100%;
+    height: 25%;
+    font-size: 0.7rem;
+    color: gray;
 }
 
 .artigoTexto p {
@@ -352,7 +365,11 @@ hr {
         width: 70%;
     }
 
-    .artigoTexto p {
+    .artigoTextoTitulo {
+        padding-top: 0;
+    }
+
+    .artigoTextoTitulo p {
         margin: 35px 0 0 0;
     }
 
