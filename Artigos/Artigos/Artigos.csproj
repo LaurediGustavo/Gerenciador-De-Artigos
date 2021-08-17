@@ -199,12 +199,18 @@
     <Compile Include="Migrations\202108041247053_Ativa2.Designer.cs">
       <DependentUpon>202108041247053_Ativa2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108171808329_ParagrafoImagem.cs" />
+    <Compile Include="Migrations\202108171808329_ParagrafoImagem.Designer.cs">
+      <DependentUpon>202108171808329_ParagrafoImagem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Artigo.cs" />
     <Compile Include="Models\ArtigoCategoria.cs" />
     <Compile Include="Models\Categoria.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Escritor.cs" />
+    <Compile Include="Models\Imagem.cs" />
+    <Compile Include="Models\Paragrafo.cs" />
     <Compile Include="ViewModel\ModelViewArtigo.cs" />
     <Compile Include="ViewModel\ModelViewArtigoEdicao.cs" />
     <Compile Include="ViewModel\ModelViewArtigoEscritor.cs" />
@@ -335,6 +341,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108041247053_Ativa2.resx">
       <DependentUpon>202108041247053_Ativa2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108171808329_ParagrafoImagem.resx">
+      <DependentUpon>202108171808329_ParagrafoImagem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
