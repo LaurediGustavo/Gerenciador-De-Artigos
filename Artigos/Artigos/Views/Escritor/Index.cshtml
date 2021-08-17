@@ -10,13 +10,13 @@
         @Html.ActionLink("Novo Escritor", "Register", "", new { @class = "btn btn-info" })
     </p>
     @using (Html.BeginForm("Index", "Escritor", FormMethod.Get))
-    {
-        <div class="input-group">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search"
-                   aria-describedby="search-addon" name="nome" />
-            <button type="submit" class="btn btn-outline-primary">search</button>
-        </div>
-    }
+        {
+            <div class="input-group">
+                <input type = "search" class="form-control rounded" placeholder="Search" aria-label="Search"
+                       aria-describedby="search-addon" name="nome" />
+                <button type = "submit" class="btn btn-outline-primary">search</button>
+            </div>
+        }
 
     <div class="indexEscritorLista">
         @foreach (var item in Model)

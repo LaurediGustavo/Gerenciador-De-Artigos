@@ -17,14 +17,27 @@ namespace Artigos.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Escritor, Administrador")]
-        public ActionResult Index(int? page, string nome)
+        public ActionResult Index(int? page, string nome, bool? ativa, bool? todas)
         {
+            ativa = (ativa ?? false);
+            todas = (todas ?? false);
+
             int id = int.Parse(User.Identity.GetUserId());
-            var artigos = db.Artigos.OrderByDescending(a => a.Id).Where(a => a.EscritorId == id).ToList();
+
+            var artigos = db.Artigos.OrderByDescending(a => a.Id).ToList(); ;
+            if (!todas.Value)
+            {
+                artigos = db.Artigos.OrderByDescending(a => a.Id).Where(a => a.EscritorId == id).ToList();
+            }
 
             if (!String.IsNullOrEmpty(nome))
             {
                 artigos = artigos.Where(a => a.Titulo.Contains(nome)).ToList();
+            }
+
+            if (ativa.Value)
+            {
+                artigos = artigos.Where(a => a.Ativo == 0).ToList();
             }
 
             int pageSize = 3;

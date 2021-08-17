@@ -14,11 +14,17 @@
         </p>
         @using (Html.BeginForm("Index", "Artigo", FormMethod.Get))
         {
-            <div class="input-group">
-                <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
-                    aria-describedby="search-addon" name="nome" />
-                <input type="submit" class="btn btn-outline-primary" value="Buscar" />
-            </div>
+    <div class="input-group">
+        <input type="search" class="form-control rounded" placeholder="Buscar" aria-label="Search"
+               aria-describedby="search-addon" name="nome" />
+        <input type="checkbox" name="ativa" class="form-check check" /><label class="checkLabel">Desativadas</label>
+        @if (User.IsInRole("Administrador"))
+        {
+            <input type="checkbox" name="todas" class="form-check check" /><label class="checkLabel">Todas</label>
+        }
+
+        <input type="submit" class="btn btn-outline-primary" value="Buscar" />
+    </div>
         }
     </div>
     <div class="divArtigos">
