@@ -19,19 +19,7 @@ namespace Artigos.Controllers
         [Authorize(Roles = "Escritor, Administrador")]
         public ActionResult Index(int? page, string nome)
         {
-            var artigos = (from a in db.Artigos
-                       join u in db.Escritores on
-                       a.EscritorId equals u.Id
-                       select new 
-                       {
-                            a.Id,
-                            a.EscritorId,
-                            a.Titulo,
-                            a.Capa,
-                            a.Ativo,
-                            u.Nome,
-                            u.Sobrenome
-                       }).OrderByDescending(a => a.Id).ToList();
+            var artigos = db.Artigos.OrderByDescending(a => a.Id).ToList();
 
             if (User.IsInRole("Escritor"))
             {
@@ -44,25 +32,10 @@ namespace Artigos.Controllers
                 artigos = artigos.Where(a => a.Titulo.Contains(nome)).ToList();
             }
 
-            List<ModelViewArtigoEscritor> artigo = new List<ModelViewArtigoEscritor>(); ;
-            foreach(var item in artigos)
-            {
-                artigo.Add(new ModelViewArtigoEscritor()
-                {
-                    Id = item.Id,
-                    EscritorId = item.EscritorId,
-                    Titulo = item.Titulo,
-                    Capa = item.Capa,
-                    Ativo = item.Ativo,
-                    Nome = item.Nome,
-                    Sobrenome = item.Sobrenome
-                });
-            }
-
             int pageSize = 3;
             int pageNumber = (page ?? 1);
 
-            return View(artigo.ToPagedList(pageNumber, pageSize));
+            return View(artigos.ToPagedList(pageNumber, pageSize));
         }
 
         [HttpGet]
@@ -135,7 +108,7 @@ namespace Artigos.Controllers
                 return HttpNotFound();
             }
 
-            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()) && !User.IsInRole("Administrador"))
             {
                 return HttpNotFound();
             }
@@ -167,26 +140,29 @@ namespace Artigos.Controllers
 
             if (ModelState.IsValid)
             {
-                if (Image != null)
+                if (ar.EscritorId == int.Parse(User.Identity.GetUserId()) || User.IsInRole("Administrador"))
                 {
-                    bool img = this.ValidarImg(Image);
-
-                    if (!img)
+                    if (Image != null)
                     {
-                        ModelState.AddModelError("Image", "As extensões permitidas são: jpg, png, gif e o tamanho máximo é de 2mb");
-                        return View(artigo);
+                        bool img = this.ValidarImg(Image);
+
+                        if (!img)
+                        {
+                            ModelState.AddModelError("Image", "As extensões permitidas são: jpg, png, gif e o tamanho máximo é de 2mb");
+                            return View(artigo);
+                        }
+
+                        BinaryReader binary = new BinaryReader(Image.InputStream);
+                        ar.Capa = binary.ReadBytes(Image.ContentLength);
                     }
 
-                    BinaryReader binary = new BinaryReader(Image.InputStream);
-                    ar.Capa = binary.ReadBytes(Image.ContentLength);
+                    ar.Titulo = artigo.Titulo;
+                    ar.Ativo = (Ativa) ? 1 : 0;
+
+                    db.Entry(ar).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Update", ar.Id);
                 }
-
-                ar.Titulo = artigo.Titulo;
-                ar.Ativo = (Ativa) ? 1 : 0;
-
-                db.Entry(ar).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Update", ar.Id);
             }
 
             return View(artigo);
@@ -207,7 +183,7 @@ namespace Artigos.Controllers
                 return Json("Id inválido!");
             }
 
-            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()) && !User.IsInRole("Administrador"))
             {
                 return Json("Id inválido!");
             }
@@ -241,7 +217,7 @@ namespace Artigos.Controllers
                 return Json("Selecione os dados corretamente!");
             }
 
-            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()))
+            if (artigo.EscritorId != int.Parse(User.Identity.GetUserId()) && !User.IsInRole("Administrador"))
             {
                 return Json("Selecione os dados corretamente!");
             }

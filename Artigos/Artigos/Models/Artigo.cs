@@ -21,5 +21,7 @@ namespace Artigos.Models
 
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
         public int Ativo { get; set; }
+
+        public virtual Escritor Escritor { get; set; }
     }
 }

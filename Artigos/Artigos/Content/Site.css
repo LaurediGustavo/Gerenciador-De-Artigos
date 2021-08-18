@@ -333,7 +333,7 @@ hr {
 .artigoTextoInfo {
     width: 100%;
     height: 25%;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     color: gray;
 }
 
@@ -363,6 +363,11 @@ hr {
 
     .artigoTexto {
         width: 70%;
+    }
+
+    .artigoTextoInfo {
+        font-size: 0.7rem;
+        color: gray;
     }
 
     .artigoTextoTitulo {

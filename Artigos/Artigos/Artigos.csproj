@@ -168,6 +168,7 @@
     <Compile Include="Controllers\CategoriaController.cs" />
     <Compile Include="Controllers\EscritorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParagrafoController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -213,7 +214,6 @@
     <Compile Include="Models\Paragrafo.cs" />
     <Compile Include="ViewModel\ModelViewArtigo.cs" />
     <Compile Include="ViewModel\ModelViewArtigoEdicao.cs" />
-    <Compile Include="ViewModel\ModelViewArtigoEscritor.cs" />
     <Compile Include="ViewModel\ModelViewEscritorAcesso.cs" />
     <Compile Include="ViewModel\ModelViewEscritorSenha.cs" />
     <Compile Include="ViewModel\ModelViewCategoria.cs" />
@@ -307,6 +307,7 @@
     <Content Include="Views\Escritor\Detalhes.cshtml" />
     <Content Include="Views\Artigo\Create.cshtml" />
     <Content Include="Views\Artigo\Update.cshtml" />
+    <Content Include="Views\Paragrafo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

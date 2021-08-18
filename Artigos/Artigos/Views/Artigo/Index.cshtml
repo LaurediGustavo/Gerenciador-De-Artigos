@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Artigos.Models.ModelViewArtigoEscritor>
+﻿@model PagedList.IPagedList<Artigos.Models.Artigo>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -44,7 +44,7 @@
                         <p>@item.Titulo</p>
                     </div>
                     <div class="artigoTextoInfo">
-                        <span>By: @item.Nome @item.Sobrenome. Ativa: @ativa</span>
+                        <span>By: @item.Escritor.Nome @item.Escritor.Sobrenome. Ativa: @ativa</span>
                     </div>
                 </div>
                 <div class="artigoBtn">

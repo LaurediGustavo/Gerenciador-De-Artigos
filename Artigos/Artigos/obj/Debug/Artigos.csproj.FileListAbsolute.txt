@@ -207,7 +207,6 @@ C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\p
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\pt-br\System.Web.WebPages.resources.dll
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\pt-br\System.Web.WebPages.Razor.resources.dll
-C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.csproj.AssemblyReference.cache
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Inicio.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.texto.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.Ativa.resources
@@ -229,3 +228,4 @@ C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\P
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.xml
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.Mvc.xml
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.ParagrafoImagem.resources
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.csproj.AssemblyReference.cache
