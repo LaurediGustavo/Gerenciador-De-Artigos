@@ -3,5 +3,49 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+{
+    @Html.AntiForgeryToken()
+}
+<div class="containerParagrafo">
+    <div class="paragrafoInsert">
+        <p>Paragrafo <span id="erro" class="text-danger"></span></p>
+        <textarea id="texto"></textarea>
+        <br />
+        <a class="btn btn-info" onclick="Create(@ViewBag.Id)">Cadastrar</a>
+    </div>
+    <hr />
+    <div class="paragrafoLista">
+        <div class="listaParagrafo">
+            <h6>Paragrafos</h6>
+            <div id="listaParagrafo" class="containerLista">
+                @*<a onclick="Details()">
+                        <div class="divLista">
+                            Imagem 1
+                        </div>
+                    </a>*@
+            </div>
+            <a class="btn btn-info align-content-center">Cadastrar</a>
+        </div>
+        <hr />
+        <div class="listaParagrafo">
+            <h6>Imagens</h6>
+            <div id="listaParagrafo" class="containerLista">
+                <a onclick="DetailsImg()">
+                    <div class="divLista">
+                        Imagem 1
+                    </div>
+                </a>
+            </div>
+            <a class="btn btn-info align-content-center">Cadastrar</a>
+        </div>
+    </div>
+</div>
 
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/Paragrafo.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        GetAll(@ViewBag.Id);
+    });
+</script>

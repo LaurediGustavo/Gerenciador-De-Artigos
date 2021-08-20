@@ -285,6 +285,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\NivelAcesso.js" />
+    <Content Include="Scripts\Paragrafo.js" />
     <Content Include="Scripts\Perfil.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
