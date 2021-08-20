@@ -410,6 +410,7 @@ a {
 
 .paragrafoInsert a {
     float: right;
+    margin-left: 5px;
 }
 
 .paragrafoLista {
@@ -423,7 +424,13 @@ a {
     height: 50%;
 }
 
-.containerLista {
+.containerLista1 {
+    width: 100%;
+    height: 90%;
+    overflow-y: auto;
+}
+
+.containerLista2 {
     width: 100%;
     height: 70%;
     overflow-y: auto;
@@ -435,4 +442,39 @@ a {
     color: white;
     padding: 5px 0 5px 0;
     margin-bottom: 5px;
+}
+
+.btnCadastroImgFalse {
+    pointer-events: none;
+}
+
+.btnCadastroImgTrue {
+    pointer-events: all;
+}
+
+@media (min-width: 768px) {
+    .containerParagrafo {
+        height: 65vh;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .paragrafoInsert {
+        width: 50%;
+        height: 100%;
+    }
+
+    .paragrafoLista {
+        width: 50%;
+        height: 100%;
+        padding: 20px 0 0 5px;
+    }
+
+    .paragrafoInsert textarea {
+        height: 100%;
+    }
+
+    .listaParagrafo {
+        height: 56.6%;
+    }
 }

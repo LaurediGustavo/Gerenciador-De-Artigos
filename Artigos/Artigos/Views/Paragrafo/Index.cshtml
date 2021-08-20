@@ -12,32 +12,34 @@
         <p>Paragrafo <span id="erro" class="text-danger"></span></p>
         <textarea id="texto"></textarea>
         <br />
-        <a class="btn btn-info" onclick="Create(@ViewBag.Id)">Cadastrar</a>
+        <a id="btnCreate" class="btn btn-info" onclick="Create(@ViewBag.Id)">Cadastrar</a>
+        <a id="btnExcluir" class="btn btn-info">Excluir</a>
+        <a id="btnUpdate" class="btn btn-info">Atualizar</a>
+        <a id="btnSair" class="btn btn-info">Sair</a>
     </div>
     <hr />
     <div class="paragrafoLista">
         <div class="listaParagrafo">
             <h6>Paragrafos</h6>
-            <div id="listaParagrafo" class="containerLista">
+            <div id="listaParagrafo" class="containerLista1">
                 @*<a onclick="Details()">
                         <div class="divLista">
                             Imagem 1
                         </div>
                     </a>*@
             </div>
-            <a class="btn btn-info align-content-center">Cadastrar</a>
         </div>
         <hr />
         <div class="listaParagrafo">
             <h6>Imagens</h6>
-            <div id="listaParagrafo" class="containerLista">
-                <a onclick="DetailsImg()">
+            <div id="listaImagem" class="containerLista2">
+                @*<a onclick="DetailsImg()">
                     <div class="divLista">
                         Imagem 1
                     </div>
-                </a>
+                </a>*@
             </div>
-            <a class="btn btn-info align-content-center">Cadastrar</a>
+            <a id="btnCadastroImg" class="btn btn-info btnCadastroImgFalse">Cadastrar</a>
         </div>
     </div>
 </div>
@@ -47,5 +49,10 @@
 <script type="text/javascript">
     $(document).ready(function () {
         GetAll(@ViewBag.Id);
+        $('#btnCreate').show();
+        $('#btnExcluir').hide();
+        $('#btnUpdate').hide();
+        $('#btnSair').hide();
+        
     });
 </script>

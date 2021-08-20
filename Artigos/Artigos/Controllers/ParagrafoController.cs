@@ -32,10 +32,26 @@ namespace Artigos.Controllers
                                  where p.ArtigoId == id
                                  select new
                                  {
-                                     p.Id
+                                     p.Id,
+                                     p.ArtigoId
                                  }).ToList();
 
                 return Json(artigosId, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json("");
+        }
+
+        [HttpGet]
+        public ActionResult Details(int idPa, int idAr)
+        {
+            int idUser = int.Parse(User.Identity.GetUserId().ToString());
+            Artigo artigo = db.Artigos.Find(idAr);
+            Paragrafo paragrafo = db.Paragrafos.Find(idPa);
+
+            if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
+            {
+                return Json(paragrafo, JsonRequestBehavior.AllowGet);
             }
 
             return Json("");
@@ -58,6 +74,49 @@ namespace Artigos.Controllers
                 db.SaveChanges();
 
                 return Json("Paragrafo adicionado!");
+            }
+
+            return Json("");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(int idPa, int idAr, string texto)
+        {
+            int idUser = int.Parse(User.Identity.GetUserId().ToString());
+            Artigo artigo = db.Artigos.Find(idAr);
+            Paragrafo paragrafo = db.Paragrafos.Find(idPa);
+
+            if (!String.IsNullOrEmpty(texto))
+            {
+                if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
+                {
+                    paragrafo.Texto = texto;
+
+                    db.Entry(paragrafo).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+
+                    return Json("Paragrafo atualizado!");
+                }
+            }
+
+            return Json("");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int idPa, int idAr)
+        {
+            int idUser = int.Parse(User.Identity.GetUserId().ToString());
+            Artigo artigo = db.Artigos.Find(idAr);
+            Paragrafo paragrafo = db.Paragrafos.Find(idPa);
+
+            if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
+            {
+                db.Paragrafos.Remove(paragrafo);
+                db.SaveChanges();
+
+                return Json("Paragrafo excluido!");
             }
 
             return Json("");
