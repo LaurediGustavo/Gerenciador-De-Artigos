@@ -76,8 +76,9 @@ function Details(idPa, id) {
 
                 sair.setAttribute('onclick', 'Sair()');
                 btnImg.setAttribute('class', 'btn btn-info btnCadastroImgTrue');
-                btnExcluir.setAttribute('onclick', 'Excluir(' + result.Id + ')');
-                btnUpdate.setAttribute('onclick', 'Update(' + result.Id + ')');
+                btnExcluir.setAttribute('onclick', 'Excluir(' + result.Id + ',' + id + ')');
+                btnUpdate.setAttribute('onclick', 'Update(' + result.Id + ',' + id + ')');
+                btnImg.setAttribute('onclick', 'Img()');
 
                 $('#texto').val(result.Texto);
                 DetailsImg(result.Id)
@@ -113,6 +114,71 @@ function DetailsImg(id) {
             alert("Erro ao buscar as imagens!");
         }
     });
+}
+
+function Update(id, idAr) {
+    if ($('#texto').val() != '') {
+
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        var texto = $('#texto').val();
+
+        $.ajax({
+            url: "/Paragrafo/Update",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            type: "POST",
+            dataType: "json",
+            data: {
+                __RequestVerificationToken: token,
+                idPa: id,
+                idAr: idAr,
+                texto: texto
+            },
+            success: function (result) {
+                GetAll(idAr);
+            },
+            error: function () {
+                alert("Erro ao atualizar!");
+            }
+        });
+    }
+    else {
+        $('#erro').text('Esse campo é obrigatório!');
+    }
+}
+
+function Excluir(id, idAr) {
+    if ($('#texto').val() != '') {
+
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            url: "/Paragrafo/Delete",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            type: "POST",
+            dataType: "json",
+            data: {
+                __RequestVerificationToken: token,
+                idPa: id,
+                idAr: idAr
+            },
+            success: function (result) {
+                alert("Exclusão realizada!");
+                GetAll(idAr);
+            },
+            error: function () {
+                alert("Erro ao Excluir!");
+            }
+        });
+    }
+    else {
+        $('#erro').text('Esse campo é obrigatório!');
+    }
+}
+
+function Img() {
+    $('#fileUpload').click();
 }
 
 function Sair() {

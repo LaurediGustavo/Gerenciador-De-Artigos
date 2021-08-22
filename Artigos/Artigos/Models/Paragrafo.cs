@@ -13,5 +13,6 @@ namespace Artigos.Models
         public int ArtigoId { get; set; }
         [Required(ErrorMessage = "Esse campo é obrigatório!")]
         public string Texto { get; set; }
+        public virtual IEnumerable<Imagem> Imagems { get; set; }
     }
 }

@@ -113,8 +113,13 @@ namespace Artigos.Controllers
 
             if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
             {
+                foreach (var item in paragrafo.Imagems)
+                {
+                    db.Imagems.Remove(item);
+                }
+
                 db.Paragrafos.Remove(paragrafo);
-                db.SaveChanges();
+                //db.SaveChanges();
 
                 return Json("Paragrafo excluido!");
             }
