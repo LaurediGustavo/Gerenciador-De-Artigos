@@ -119,7 +119,7 @@ namespace Artigos.Controllers
                 }
 
                 db.Paragrafos.Remove(paragrafo);
-                //db.SaveChanges();
+                db.SaveChanges();
 
                 return Json("Paragrafo excluido!");
             }
