@@ -33,7 +33,7 @@ namespace Artigos.Controllers
                             ParagrafoId = idPa,
                             Img = imgByte.ReadBytes(img.ContentLength)
                         });
-                        db.SaveChanges();
+                        //db.SaveChanges();
 
                         return Json("Imagem cadastrada!");
                     }
@@ -45,6 +45,11 @@ namespace Artigos.Controllers
 
         private Boolean ValidarImg(HttpPostedFileBase img)
         {
+            if (img == null)
+            {
+                return false;
+            }
+
             var ex = new string[]
             {
                 "image/gif",

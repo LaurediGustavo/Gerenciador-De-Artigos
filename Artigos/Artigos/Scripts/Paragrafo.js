@@ -78,7 +78,7 @@ function Details(idPa, id) {
                 btnImg.setAttribute('class', 'btn btn-info btnCadastroImgTrue');
                 btnExcluir.setAttribute('onclick', 'Excluir(' + result.Id + ',' + id + ')');
                 btnUpdate.setAttribute('onclick', 'Update(' + result.Id + ',' + id + ')');
-                btnImg.setAttribute('onclick', 'Img()');
+                btnImg.setAttribute('onclick', 'Img(' + result.Id + ',' + id + ')');
 
                 $('#texto').val(result.Texto);
                 DetailsImg(result.Id)
@@ -178,33 +178,37 @@ function Excluir(id, idAr) {
     }
 }
 
-function Img() {
+function Img(idPa, idAr) {
     $('#fileUpload').click();
+
+    const img = document.querySelector('#fileUpload');
+    img.addEventListener('change', function () {
+        var nome = "Extensões permitidas: gif, png, jpg. Tamanho de 2Mb";
+
+        if (img.files.length > 0) {
+            var ex = ["gif", "png", "jpg"];
+            var ext = img.files[0].name.split('.').pop().toLowerCase();
+
+            if (ex.lastIndexOf(ext) != -1) {
+                CreateImg(idAr, idPa);
+            }
+        }
+
+        alert(nome);
+    });
 }
 
-const img = document.querySelector('#fileUpload');
+function CreateImg(idAr, idPa) {
 
-img.addEventListener('change', function () {
-    var nome = "Não há arquivo selecionado. Selecionar arquivo...";
-    if (img.files.length > 0) {
-        var ex = ["gif", "png", "jpg"];
-        var ext = img.files[0].name.split('.').pop().toLowerCase();
+    var img = $("#fileUpload").get(0);
+    var files = img.files;
 
-        if (ex.lastIndexOf(ext) == -1) {
-            nome = "Extensão permitidas: gif, png, jpg";
-        }
-        else {
-            CreateImg(img);
-        }
-    }
-
-    alert(nome);
-});
-
-function CreateImg(img) {
     if (img.files.length > 0) {
         var form = $('#__AjaxAntiForgeryForm');
         var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        var fileData = new FormData();
+        fileData.append(files[0].name, files[0]);
 
         $.ajax({
             url: "/Imagem/Create",
@@ -214,8 +218,8 @@ function CreateImg(img) {
             data: {
                 __RequestVerificationToken: token,
                 idAr: idAr,
-                idPa: id,
-                img = img
+                idPa: idPa,
+                img: fileData
             },
             success: function (result) {
                 DetailsImg();

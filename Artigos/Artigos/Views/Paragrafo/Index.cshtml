@@ -3,10 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm" }))
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryForm", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 }
+
 <div class="containerParagrafo">
     <div class="paragrafoInsert">
         <p>Paragrafo <span id="erro" class="text-danger"></span></p>
