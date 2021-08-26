@@ -148,8 +148,7 @@ function Update(id, idAr) {
 }
 
 function Excluir(id, idAr) {
-    if ($('#texto').val() != '') {
-
+    if (id != null) {
         var form = $('#__AjaxAntiForgeryForm');
         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -166,6 +165,8 @@ function Excluir(id, idAr) {
             success: function (result) {
                 alert("Exclusão realizada!");
                 GetAll(idAr);
+                Sair();
+                $('#listaImagem').html('');
             },
             error: function () {
                 alert("Erro ao Excluir!");
@@ -179,6 +180,54 @@ function Excluir(id, idAr) {
 
 function Img() {
     $('#fileUpload').click();
+}
+
+const img = document.querySelector('#fileUpload');
+
+img.addEventListener('change', function () {
+    var nome = "Não há arquivo selecionado. Selecionar arquivo...";
+    if (img.files.length > 0) {
+        var ex = ["gif", "png", "jpg"];
+        var ext = img.files[0].name.split('.').pop().toLowerCase();
+
+        if (ex.lastIndexOf(ext) == -1) {
+            nome = "Extensão permitidas: gif, png, jpg";
+        }
+        else {
+            CreateImg(img);
+        }
+    }
+
+    alert(nome);
+});
+
+function CreateImg(img) {
+    if (img.files.length > 0) {
+        var form = $('#__AjaxAntiForgeryForm');
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            url: "/Imagem/Create",
+            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            type: "POST",
+            dataType: "json",
+            data: {
+                __RequestVerificationToken: token,
+                idAr: idAr,
+                idPa: id,
+                img = img
+            },
+            success: function (result) {
+                DetailsImg();
+            },
+            error: function () {
+                alert("Erro ao cadastrar a imagem!");
+            }
+        });
+    }
+    else {
+        $('#erro').text('Selecione uma imagem!');
+    }
 }
 
 function Sair() {

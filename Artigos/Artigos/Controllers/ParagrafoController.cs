@@ -113,9 +113,12 @@ namespace Artigos.Controllers
 
             if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
             {
-                foreach (var item in paragrafo.Imagems)
+                if (paragrafo.Imagems != null)
                 {
-                    db.Imagems.Remove(item);
+                    foreach (var item in paragrafo.Imagems)
+                    {
+                        db.Imagems.Remove(item);
+                    }
                 }
 
                 db.Paragrafos.Remove(paragrafo);
