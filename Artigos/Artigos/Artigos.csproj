@@ -205,6 +205,10 @@
     <Compile Include="Migrations\202108171808329_ParagrafoImagem.Designer.cs">
       <DependentUpon>202108171808329_ParagrafoImagem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108281905036_ImgParagrafo.cs" />
+    <Compile Include="Migrations\202108281905036_ImgParagrafo.Designer.cs">
+      <DependentUpon>202108281905036_ImgParagrafo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Artigo.cs" />
     <Compile Include="Models\ArtigoCategoria.cs" />
@@ -347,6 +351,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108171808329_ParagrafoImagem.resx">
       <DependentUpon>202108171808329_ParagrafoImagem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108281905036_ImgParagrafo.resx">
+      <DependentUpon>202108281905036_ImgParagrafo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

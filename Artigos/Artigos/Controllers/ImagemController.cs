@@ -14,9 +14,10 @@ namespace Artigos.Controllers
         private readonly Context db = new Context();
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(int idAr, int idPa, HttpPostedFileBase img)
+        public ActionResult Create(int idAr, int idPa)
         {
+            HttpPostedFileBase img = Request.Files[0];
+
             if (ValidarImg(img))
             {
                 Artigo artigo = db.Artigos.Find(idAr);
@@ -33,7 +34,7 @@ namespace Artigos.Controllers
                             ParagrafoId = idPa,
                             Img = imgByte.ReadBytes(img.ContentLength)
                         });
-                        //db.SaveChanges();
+                        db.SaveChanges();
 
                         return Json("Imagem cadastrada!");
                     }
@@ -63,6 +64,68 @@ namespace Artigos.Controllers
             }
 
             return true;
+        }
+
+        [HttpGet]
+        public ActionResult GetImg(int id)
+        {
+            var imagem = (from i in db.Imagems
+                          where i.ParagrafoId == id
+                          select new 
+                          { 
+                             i.Id,
+                             i.ParagrafoId
+                          });
+
+            return Json(imagem, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetDetailsImg(int id)
+        {
+            Imagem imagem = db.Imagems.Find(id);
+
+            var base64 = Convert.ToBase64String(imagem.Img);
+            var img = String.Format("data:image/gif;base64,{0}", base64);
+
+            var i = new { Id = imagem.Id, Image = img };
+            return Json(i, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int Id)
+        {
+            Imagem imagem = db.Imagems.Find(Id);
+
+            if (imagem != null)
+            {
+                db.Imagems.Remove(imagem);
+                db.SaveChanges();
+            }
+
+            return Json("");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(int Id, HttpPostedFileBase img)
+        {
+            Imagem imagem = db.Imagems.Find(Id);
+
+            if (imagem != null && img != null)
+            {
+                if (ValidarImg(img))
+                {
+                    BinaryReader binary = new BinaryReader(img.InputStream);
+                    imagem.Img = binary.ReadBytes(img.ContentLength);
+
+                    db.Entry(imagem).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+
+            return Json("");
         }
     }
 }

@@ -229,3 +229,4 @@ C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\P
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\bin\PagedList.Mvc.xml
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.ParagrafoImagem.resources
 C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.csproj.AssemblyReference.cache
+C:\Users\L.Gustavo\Documents\GitHub\Gerenciador-De-Artigos\Artigos\Artigos\obj\Debug\Artigos.Migrations.ImgParagrafo.resources

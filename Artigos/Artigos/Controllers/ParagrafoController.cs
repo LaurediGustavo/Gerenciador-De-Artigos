@@ -47,7 +47,14 @@ namespace Artigos.Controllers
         {
             int idUser = int.Parse(User.Identity.GetUserId().ToString());
             Artigo artigo = db.Artigos.Find(idAr);
-            Paragrafo paragrafo = db.Paragrafos.Find(idPa);
+            var paragrafo = (from p in db.Paragrafos 
+                             where p.Id == idPa
+                             select new 
+                             { 
+                                p.ArtigoId,
+                                p.Id,
+                                p.Texto
+                             }).FirstOrDefault();
 
             if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
             {
@@ -113,14 +120,6 @@ namespace Artigos.Controllers
 
             if ((paragrafo.ArtigoId == artigo.Id && idUser == artigo.EscritorId) || User.IsInRole("Administrador"))
             {
-                if (paragrafo.Imagems != null)
-                {
-                    foreach (var item in paragrafo.Imagems)
-                    {
-                        db.Imagems.Remove(item);
-                    }
-                }
-
                 db.Paragrafos.Remove(paragrafo);
                 db.SaveChanges();
 

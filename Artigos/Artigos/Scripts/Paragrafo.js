@@ -92,7 +92,7 @@ function Details(idPa, id) {
 
 function DetailsImg(id) {
     $.ajax({
-        url: "/Paragrafo/GetImg/" + id,
+        url: "/Imagem/GetImg/" + id,
         contentType: "application/json; charset=utf-8",
         type: "GET",
         dataType: "json",
@@ -100,7 +100,7 @@ function DetailsImg(id) {
             var html = '';
             var num = 1;
             $.each(result, function (key, item) {
-                html += '<a onclick="GetDetailsImg(' + item.Id + ',' + item.ParagrafoId + ')">';
+                html += '<a onclick="GetDetailsImg(' + item.Id + ')" data-toggle="modal" data-target="#exampleModal">';
                 html += '<div class="divLista">';
                 html += 'Imagem ' + num;
                 html += '</div>';
@@ -149,29 +149,33 @@ function Update(id, idAr) {
 
 function Excluir(id, idAr) {
     if (id != null) {
-        var form = $('#__AjaxAntiForgeryForm');
-        var token = $('input[name="__RequestVerificationToken"]', form).val();
+        var confi = confirm("Você realmente deseja excluir esse parágrafo?");
 
-        $.ajax({
-            url: "/Paragrafo/Delete",
-            contentType: "application/x-www-form-urlencoded;charset=utf-8",
-            type: "POST",
-            dataType: "json",
-            data: {
-                __RequestVerificationToken: token,
-                idPa: id,
-                idAr: idAr
-            },
-            success: function (result) {
-                alert("Exclusão realizada!");
-                GetAll(idAr);
-                Sair();
-                $('#listaImagem').html('');
-            },
-            error: function () {
-                alert("Erro ao Excluir!");
-            }
-        });
+        if (confi) {
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            $.ajax({
+                url: "/Paragrafo/Delete",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    __RequestVerificationToken: token,
+                    idPa: id,
+                    idAr: idAr
+                },
+                success: function (result) {
+                    alert("Exclusão realizada!");
+                    GetAll(idAr);
+                    Sair();
+                    $('#listaImagem').html('');
+                },
+                error: function () {
+                    alert("Erro ao Excluir!");
+                }
+            });
+        }
     }
     else {
         $('#erro').text('Esse campo é obrigatório!');
@@ -192,37 +196,29 @@ function Img(idPa, idAr) {
             if (ex.lastIndexOf(ext) != -1) {
                 CreateImg(idAr, idPa);
             }
+            else {
+                alert(nome);
+            }
         }
-
-        alert(nome);
     });
 }
 
 function CreateImg(idAr, idPa) {
-
     var img = $("#fileUpload").get(0);
     var files = img.files;
 
     if (img.files.length > 0) {
-        var form = $('#__AjaxAntiForgeryForm');
-        var token = $('input[name="__RequestVerificationToken"]', form).val();
-
         var fileData = new FormData();
-        fileData.append(files[0].name, files[0]);
+        fileData.append("img", files[0]);
 
         $.ajax({
-            url: "/Imagem/Create",
-            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+            url: "/Imagem/Create?idAr=" + idAr + "&idPa=" + idPa,
             type: "POST",
-            dataType: "json",
-            data: {
-                __RequestVerificationToken: token,
-                idAr: idAr,
-                idPa: idPa,
-                img: fileData
-            },
+            data: fileData,
+            processData: false,
+            contentType: false,
             success: function (result) {
-                DetailsImg();
+                DetailsImg(idPa);
             },
             error: function () {
                 alert("Erro ao cadastrar a imagem!");
@@ -230,8 +226,24 @@ function CreateImg(idAr, idPa) {
         });
     }
     else {
-        $('#erro').text('Selecione uma imagem!');
+        alert('Selecione uma imagem!');
     }
+}
+
+function GetDetailsImg(id) {
+    $.ajax({
+        url: "/Imagem/GetDetailsImg/" + id,
+        contentType: "application/json; charset=utf-8",
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+            const img = document.querySelector('#img');
+            img.setAttribute("src", result.Image);
+        },
+        error: function () {
+            alert("Erro ao buscar as imagens!");
+        }
+    });
 }
 
 function Sair() {
@@ -240,6 +252,7 @@ function Sair() {
     $('#btnUpdate').hide();
     $('#btnSair').hide();
     $('#texto').val('');
+    $('#listaImagem').html('');
 
     const btnImg = document.querySelector('#btnCadastroImg');
     btnImg.setAttribute('class', 'btn btn-info btnCadastroImgFalse');
