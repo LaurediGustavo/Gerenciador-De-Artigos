@@ -100,7 +100,7 @@ function DetailsImg(id) {
             var html = '';
             var num = 1;
             $.each(result, function (key, item) {
-                html += '<a onclick="GetDetailsImg(' + item.Id + ')" data-toggle="modal" data-target="#exampleModal">';
+                html += '<a onclick="GetDetailsImg(' + item.Id + ', ' + item.ParagrafoId + ')" data-toggle="modal" data-target="#exampleModal">';
                 html += '<div class="divLista">';
                 html += 'Imagem ' + num;
                 html += '</div>';
@@ -182,25 +182,27 @@ function Excluir(id, idAr) {
     }
 }
 
+var img = $("#fileUpload").get(0);
 function Img(idPa, idAr) {
+    img.setAttribute('onchange', 'validar(' + idPa + ', ' + idAr + ')');
     $('#fileUpload').click();
+}
 
-    const img = document.querySelector('#fileUpload');
-    img.addEventListener('change', function () {
-        var nome = "Extensões permitidas: gif, png, jpg. Tamanho de 2Mb";
+function validar(idPa, idAr) {
+    var nome = "Extensões permitidas: gif, png, jpg. Tamanho de 2Mb";
+    img = $("#fileUpload").get(0)
 
-        if (img.files.length > 0) {
-            var ex = ["gif", "png", "jpg"];
-            var ext = img.files[0].name.split('.').pop().toLowerCase();
+    if (img.files.length > 0) {
+        var ex = ["gif", "png", "jpg"];
+        var ext = img.files[0].name.split('.').pop().toLowerCase();
 
-            if (ex.lastIndexOf(ext) != -1) {
-                CreateImg(idAr, idPa);
-            }
-            else {
-                alert(nome);
-            }
+        if (ex.lastIndexOf(ext) != -1) {
+            CreateImg(idAr, idPa);
         }
-    });
+        else {
+            alert(nome);
+        }
+    }
 }
 
 function CreateImg(idAr, idPa) {
@@ -209,7 +211,7 @@ function CreateImg(idAr, idPa) {
 
     if (img.files.length > 0) {
         var fileData = new FormData();
-        fileData.append("img", files[0]);
+        fileData.append(files[0].name, files[0]);
 
         $.ajax({
             url: "/Imagem/Create?idAr=" + idAr + "&idPa=" + idPa,
@@ -230,20 +232,85 @@ function CreateImg(idAr, idPa) {
     }
 }
 
-function GetDetailsImg(id) {
+const btnDe = document.querySelector("#btnDe");
+const btnUp = document.querySelector("#btnUp");
+
+function GetDetailsImg(idIma, idPa) {
     $.ajax({
-        url: "/Imagem/GetDetailsImg/" + id,
+        url: "/Imagem/GetDetailsImg/" + idIma,
         contentType: "application/json; charset=utf-8",
         type: "GET",
         dataType: "json",
         success: function (result) {
             const img = document.querySelector('#img');
             img.setAttribute("src", result.Image);
+
+            btnDe.setAttribute('onclick', 'DeleteImg(' + result.Id + ', ' + idPa + ')');
+            btnUp.setAttribute('onclick', 'UpdateImg(' + result.Id + ', ' + idPa + ')');
         },
         error: function () {
             alert("Erro ao buscar as imagens!");
         }
     });
+}
+
+function DeleteImg(idIma, idPa) {
+    if (idIma != null && idIma != 0) {
+        var con = confirm("Deseja deletar essa imagem?");
+        btnDe.setAttribute('data-dismiss', '');
+
+        if (con) {
+            btnDe.setAttribute('data-dismiss', 'modal');
+
+            var form = $('#__AjaxAntiForgeryForm');
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            $.ajax({
+                url: "/Imagem/Delete/" + idIma,
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded;charset=utf-8",
+                dataType: "json",
+                data: { __RequestVerificationToken: token },
+                success: function () {
+                    DetailsImg(idPa);
+                },
+                error: function () {
+                    alert("Erro ao excluir a imagem!");
+                }
+            });
+        }
+    }
+}
+
+function UpdateImg(idIma, idPa) {
+    if (idIma != null && idIma != 0) {
+        var img = $("#fileUpload").get(0);
+        var files = img.files;
+        btnDe.setAttribute('data-dismiss', '');
+
+        if (img.files.length > 0) {
+            var fileData = new FormData();
+            fileData.append(files[0].name, files[0]);
+
+            $.ajax({
+                url: "/Imagem/Update/" + idIma,
+                type: "POST",
+                data: fileData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    btnDe.setAttribute('data-dismiss', 'modal');
+                    DetailsImg(idPa);
+                },
+                error: function () {
+                    alert("Erro ao cadastrar a imagem!");
+                }
+            });
+        }
+        else {
+            alert('Selecione uma imagem!');
+        }
+    }
 }
 
 function Sair() {

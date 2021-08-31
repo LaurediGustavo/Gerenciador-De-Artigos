@@ -109,8 +109,9 @@ namespace Artigos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(int Id, HttpPostedFileBase img)
+        public ActionResult Update(int Id)
         {
+            HttpPostedFileBase img = Request.Files[0];
             Imagem imagem = db.Imagems.Find(Id);
 
             if (imagem != null && img != null)
